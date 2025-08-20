@@ -1,2 +1,25 @@
-.idea
-venv
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.idea/
+.vscode/
+
+# Django
+db.sqlite3
+/media/
+/static_cdn/
+
+# OS-related
+.DS_Store
+Thumbs.db
+
+# Logs & temp files
+*.log
+*.pot
+*.mo
