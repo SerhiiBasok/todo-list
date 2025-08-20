@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="row">
+    <div class="col">
+      <h1 class="my-4">TODO list</h1>
+    </div>
+    <div class="col-auto d-flex align-items-center">
+      <a href="{% url 'app_list:task-create' %}" class="btn btn-primary">Add task</a>
+    </div>
+  </div>
+
+  <hr>
+
+  <ul class="list-unstyled">
+    {% for task in tasks %}
+      <li class="mb-4">
+        <div class="row">
+          <div class="col">
+            <strong class="h4">{{ task.content }}</strong>
+            <span class="{% if task.is_complete %}text-success{% else %}text-danger{% endif %} fw-bold">
+                    ({% if task.is_complete %}Done{% else %}Not done{% endif %})
+                </span>
+            <br>
+            <span class="text-muted">
+                Created: {{ task.created_at|date:"F j, Y, P" }}
+            </span>
+            {% if task.deadline %}
+              <br>
+              <span class="text-muted">
+                Deadline: {{ task.deadline|date:"F j, Y, P" }}
+              </span>
+            {% endif %}
+            <br>
+            <span class="text-muted">Tags:</span>
+            {% for tag in task.tags.all %}
+              <span class="badge me-1">{{ tag.name }}</span>{% if not forloop.last %}, {% endif %}
+            {% endfor %}
+          </div>
+          <div class="col-auto d-flex align-items-center">
+            {% if not task.is_complete %}
+              <a href="{% url 'app_list:complete-task' task.id %}" class="btn btn-success btn-sm">Complete</a>
+            {% else %}
+              <a href="{% url 'app_list:task-undo' task.id %}" class="btn btn-secondary btn-sm">Undo</a>
+            {% endif %}
+          </div>
+        </div>
+        <div class="mt-2">
+          <a href="{% url 'app_list:task-update' task.id %}" class="btn btn-info btn-sm me-2">Edit</a> |
+          <a href="{% url 'app_list:task-delete' task.id %}" class="btn btn-danger btn-sm">Delete</a>
+        </div>
+        <hr>
+      </li>
+    {% empty %}
+      <li>No tasks yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
